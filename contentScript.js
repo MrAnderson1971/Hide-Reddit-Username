@@ -66,11 +66,22 @@ function replaceUsername(username) {
                 } else if (node.nodeType === Node.TEXT_NODE) {
                     processTextNode(node);
                 }
+
+                // Hide new avatars if any appeared
+                hideUserAvatars(username);
             });
         });
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Function to hide images with alt text containing "User Avatar" or "u/[username] avatar"
+function hideUserAvatars(username) {
+    const avatars = document.querySelectorAll(`img[alt*="User Avatar"], img[alt*="u/${username} avatar"]`);
+    avatars.forEach(img => {
+        img.style.display = 'none';
+    });
 }
 
 // Retrieve the encoded username from storage, decode it, and replace occurrences
@@ -79,5 +90,6 @@ chrome.storage.sync.get(['redditUsername'], result => {
     if (encoded) {
         const decodedUsername = caesarShiftDecode(encoded, 3);
         replaceUsername(decodedUsername);
+        hideUserAvatars(decodedUsername);
     }
 });
