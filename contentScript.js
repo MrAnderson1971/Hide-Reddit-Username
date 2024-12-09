@@ -47,6 +47,7 @@ function replaceUsername(username) {
         while (walker.nextNode()) {
             processTextNode(walker.currentNode);
         }
+        hideTitle(username);
     }
 
     // Initial processing of the document
@@ -69,6 +70,7 @@ function replaceUsername(username) {
 
                 // Hide new avatars if any appeared
                 hideUserAvatars(username);
+                hideTitle(username);
             });
         });
     });
@@ -84,6 +86,13 @@ function hideUserAvatars(username) {
     });
 }
 
+function hideTitle(username) {
+    const regex = new RegExp(`${username}`, 'g');
+    if (document.title.includes(username)) {
+        document.title = document.title.replace(regex, "[deleted]");
+    }
+}
+
 // Retrieve the encoded username from storage, decode it, and replace occurrences
 chrome.storage.sync.get(['redditUsername'], result => {
     const encoded = result.redditUsername;
@@ -91,5 +100,6 @@ chrome.storage.sync.get(['redditUsername'], result => {
         const decodedUsername = caesarShiftDecode(encoded, 3);
         replaceUsername(decodedUsername);
         hideUserAvatars(decodedUsername);
+        hideTitle(decodedUsername);
     }
 });
