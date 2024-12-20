@@ -37,3 +37,17 @@ document.getElementById('saveBtn').addEventListener('click', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    chrome.storage.sync.get(['hideUsernameActive'], result => {
+         // Default to false if not set
+        document.getElementById('enable').checked = result.hideUsernameActive || false;
+    });
+});
+
+document.getElementById("enable").addEventListener('click', () => {
+    const checked = document.getElementById('enable').checked;
+    chrome.storage.sync.set({ hideUsernameActive: checked }, () => {
+        setTimeout(() => location.reload(), 200);
+    });
+})

@@ -7,7 +7,7 @@
             font-family: sans-serif;
             margin: 10px;
         }
-        input {
+        #username {
             width: 200px;
             margin-bottom: 10px;
         }
@@ -21,6 +21,11 @@
 <h1>Set Username</h1>
 <input type="text" id="username" placeholder="Enter your Reddit username" />
 <button id="saveBtn">Save</button>
+<form>
+    <input type="checkbox" id="enable">
+    <label for="enable">Enabled
+    </label>
+</form>
 <p id="status"></p>
 <script src="popup.js"></script>
 </body>

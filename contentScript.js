@@ -94,9 +94,10 @@ function hideTitle(username) {
 }
 
 // Retrieve the encoded username from storage, decode it, and replace occurrences
-chrome.storage.sync.get(['redditUsername'], result => {
+chrome.storage.sync.get(['redditUsername', 'hideUsernameActive'], result => {
     const encoded = result.redditUsername;
-    if (encoded) {
+    const active = result.hideUsernameActive;
+    if (encoded && active) {
         const decodedUsername = caesarShiftDecode(encoded, 3);
         replaceUsername(decodedUsername);
         hideUserAvatars(decodedUsername);
